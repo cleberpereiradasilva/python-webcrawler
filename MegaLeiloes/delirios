@@ -1,0 +1,180 @@
+04/07/2018 -
+
+12:00
+
+https://www.megaleiloes.com.br/imoveis/ce/casa-passare-fortaleza-ce-x21931
+
+x21931
+
+	o codigo não está no set:
+
+		pegar as paginas dos lotes: x21932?Pagina=1
+		adiciona o codigo ce-x21931 ao set: set(x21931)
+		coletar dados e fazer tudo
+
+set(x21931)
+
+
+x21932?Pagina=1
+
+x21932
+
+	o codigo não está no set:
+
+		pegar as paginas dos lotes: x21932?Pagina=2
+		adiciona o codigo ce-x21931 ao set: set(x21932)
+		coletar dados e fazer tudo
+
+set(x21931,x21932)
+
+x21932?Pagina=2
+
+x21932
+
+
+	o codigo está no set
+		o codigo esta no set e a url tem "?pagina=":
+			pegar as paginas dos lotes: x21932?Pagina=3
+
+
+
+
+
+fazer um set para colocar o código de todos os imoveis que ja foram scrapeados
+
+	na hora do loop (for):
+
+		se o codigo estiver no set:
+			se o codigo estiver no set e a url tiver "?pagina=":
+				somente pegar as paginas dos lotes e salvar na outrosLotes, 
+				nao coletar nenhum dado e nao salvar nada
+		
+		se o codigo não estiver no set:
+			pegar as paginas dos lotes e salvar na outrosLotes, 
+			adicionar o codigo ao set
+			coletar dados e fazer tudo
+
+############
+
+04/07/2018 -
+
+13:00
+
+355 no total
+24 registros (contado com duplicados)
+11 reigstros que se duplicaram
+
+355 - 24 = 331
+331 + 11 = 342
+
+tem que ter 342 registros no total
+
+
+
+#############
+
+04/07/2018 -
+
+14:00
+
+ - antes do INSERT no banco de dados
+
+fazer um select na tabela megaleiloes
+
+se o titulo ja existe em algum registro:
+	faz update
+else:
+	faz insert
+
+################
+
+05/07/2018 -
+
+19:00
+
+refazer tudo, a logica deve ser a seguinte:
+
+- primeiro percorremos todas as paginas de imoveis e coletamos todos os links dos thumbs gravando em um set chamado: paginas
+
+- segundo rodamos um for em paginas pegando os dados e coletamos links de outros lotes em um outro set chamado: outrosLotes
+	gravamos todos os códigos em codigosScrapeados
+
+- terceiro rodamos um for em outrosLotes
+
+	se o codigo estiver no codigosScrapeados:
+		
+		se o codigo estiver no codigosScrapeados e a url tiver "?pagina=":
+			somente pegar as paginas dos lotes e salvar na outrosLotes, 
+			nao coletar nenhum dado e nao salvar nada
+	
+	se o codigo não estiver no codigosScrapeados:
+		pegar as paginas dos lotes e salvar na ???, 
+		adicionar o codigo ao set
+		coletar dados e fazer tudo
+
+
+#################
+
+05/07/2018 -
+
+22:00
+
+refazer tudo, a logica deve ser a seguinte:
+
+linksdosImoveis = set()
+
+1 - percorremos todas as paginas de imoveis e coletamos todos os links dos thumbs gravando em um set chamado: linksdosImoveis
+
+codigosScapeados = set()
+
+2 - rodamos um for em linksdosImoveis (transformar o linksdosImoveis em list antes):
+
+	# executar verificação de paginação do imovel com links de lotes
+
+	1 - se existe o botão de proximo na pagina:
+
+		# Vamos pegar todas as paginas desse imovel
+		
+		1 - pegar o link de próximo e colocar em uma lista chamada paginascomLotes
+
+		2 - pegar o link atual da pagina e colocar na lista chamada paginascomLotes
+
+		3 - rodar um for em paginascomLotes
+			
+			1 - se existe o botão de proximo na pagina:
+
+				1 - pegar o link de próximo e colocar na lista paginascomLotes
+				2 - coletar os links dos lotes e colocar no set linksdeLotes
+				3 - transformar os links em codigo e adicionar ao set codigosLotes
+
+			2 - se nao existe botão de proximo
+				1 - coletar os links dos lotes e colocar no set linksdeLotes
+				2 - transformar os links em codigo e adicionar ao set codigosLotes
+				3 - breakar o loop
+
+	2 - Coletar dados do imovel
+	3 - salvar imagens
+	4 - salvar pdf
+	5 - insert no banco
+	6 - colocar codigodoImovel em codigosScapeados
+
+3 - transformamos a diferença entre codigosScapeados e codigosLotes em uma lista chamada listadiferenca
+
+>>> print codigosScapeados
+set([2, 3, 4, 5])
+>>> print codigosLotes
+set([1, 2, 3, 4, 5])
+>>> codigosLotes.difference(codigosScapeados)
+set([1])
+listadiferenca = codigosLotes.difference(codigosScapeados)
+
+
+4 - rodamos um for na lista listadiferenca 
+
+	1 - Coletar dados do imovel
+	2 - salvar imagens
+	3 - salvar pdf
+	4 - insert no banco
+	5 - colocar codigodoImovel em codigosScapeados
+
+
